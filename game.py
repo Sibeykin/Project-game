@@ -1,26 +1,42 @@
-import random
+import random, os
 
-whole_choice = ["камень", "ножницы", "бумага"]
+choices = ["камень", "ножницы", "бумага"]
+scores = {"игрок": 0, "бот": 0, "ничья": 0}
 
-while True:
-    random_number = random.choice(whole_choice)
-    user_number = input("Выбери: камень, ножницы, бумага (или введи 'выход' для завершения): ")
+def clear(): os.system('cls' if os.name == 'nt' else 'clear')
 
-    if user_number == "выход":
-        print("Игра завершена.")
-        break
+def get_choice():
+    while True:
+        choice = input("Выбери: камень, ножницы, бумага (или 'выход'): ").lower().strip()
+        if choice == "выход" or choice in choices: return choice
+        print("Ошибка: выберите только 'камень', 'ножницы', 'бумагу' или 'выход'!")
 
-    if user_number not in whole_choice:
-        print("Ошибка: выберите только 'камень', 'ножницы' или 'бумагу'!")
-        continue
+def play_game():
+    while True:
+        clear()
+        print(f"\nСчет: Игрок: {scores['игрок']} | Бот: {scores['бот']} | Ничьи: {scores['ничья']}\n")
+        bot = random.choice(choices)
+        user = get_choice()
+        
+        if user == "выход":
+            print(f"\nИтог: Игрок: {scores['игрок']} | Бот: {scores['бот']} | Ничьи: {scores['ничья']}")
+            break
+            
+        print(f"\nБот выбрал: {bot}")
+        if user == bot:
+            print("Ничья!")
+            scores["ничья"] += 1
+        elif (user == "камень" and bot == "ножницы") or (user == "ножницы" and bot == "бумага") or (user == "бумага" and bot == "камень"):
+            print("Вы победили!")
+            scores["игрок"] += 1
+        else:
+            print("Вы проиграли!")
+            scores["бот"] += 1
+        input("\nEnter для продолжения...")
 
-    print(f"Бот выбрал: {random_number}")
-
-    if user_number == random_number:
-        print("Ничья!")
-    elif (user_number == "камень" and random_number == "ножницы") or \
-         (user_number == "ножницы" and random_number == "бумага") or \
-         (user_number == "бумага" and random_number == "камень"):
-        print("Вы победили!")
-    else:
-        print("Вы проиграли!")
+def main():
+    while True:
+        clear()
+        print("1. Начать игру\n2. Выход")
+        if input("Выбор (1-2): ").strip() == "1": play_game()
+        else: break
