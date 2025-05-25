@@ -2,7 +2,6 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, QH
                              QStackedWidget, QScrollArea, QTableWidget, QTableWidgetItem, QHeaderView, QMessageBox, QStatusBar)
 from PyQt6.QtCore import Qt, QTimer
 import random
-from datetime import datetime
 import json
 # константы стилей
 BUTTON_STYLE = """
@@ -10,9 +9,9 @@ BUTTON_STYLE = """
         background-color: white;
         border: 2px solid black;
         border-radius: 10px;
-        padding: 15px 30px;
-        font-size: 16px;
-        min-width: 200px;
+        padding: 20px 40px;
+        font-size: 18px;
+        min-width: 220px;
     }
     QPushButton:hover { background-color: #EEEEEE; }
     QPushButton:pressed { background-color: #CCCCCC; }
@@ -22,7 +21,7 @@ SMALL_BUTTON_STYLE = """
         background-color: white;
         border: 2px solid black;
         border-radius: 5px;
-        padding: 5px 15px;
+        padding: 8px 20px;
         font-size: 14px;
         min-width: 100px;
     }
@@ -34,7 +33,7 @@ TINY_BUTTON_STYLE = """
         background-color: white;
         border: 2px solid black;
         border-radius: 15px;
-        padding: 3px 10px;
+        padding: 5px 15px;
         font-size: 12px;
         min-width: 80px;
     }
@@ -64,7 +63,7 @@ def save_game_history(game_type, player1_score, player2_score):
             history = []
 
         history.append({
-            "date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "date": "2024-03-21 12:00:00",  
             "game_type": game_type,
             "player1_score": player1_score,
             "player2_score": player2_score
@@ -350,20 +349,20 @@ class BaseGameWidget(QWidget):
 
         # игрок 1
         player1_layout = QVBoxLayout()
-        player1_layout.setSpacing(2)
+        player1_layout.setSpacing(0)
         self.score1_label = QLabel(f"{self.get_player1_name()}: {self.score1}")
-        self.score1_label.setStyleSheet("font-size: 24px; font-weight: bold;")
+        self.score1_label.setStyleSheet("font-size: 28px; font-weight: bold;")
         player1_layout.addWidget(self.score1_label, alignment=Qt.AlignmentFlag.AlignCenter)
         self.player1_icon = QLabel("👤")
         self.player1_icon.setStyleSheet("font-size: 40px;")
         player1_layout.addWidget(self.player1_icon, alignment=Qt.AlignmentFlag.AlignCenter)
         players_layout.addLayout(player1_layout)
 
-        players_layout.addSpacing(50)
+        players_layout.addSpacing(20)
 
         # игрок 2
         player2_layout = QVBoxLayout()
-        player2_layout.setSpacing(2)
+        player2_layout.setSpacing(0)
         self.score2_label = QLabel(f"{self.get_player2_name()}: {self.score2}")
         self.score2_label.setStyleSheet("font-size: 24px; font-weight: bold;")
         player2_layout.addWidget(self.score2_label, alignment=Qt.AlignmentFlag.AlignCenter)
@@ -377,12 +376,13 @@ class BaseGameWidget(QWidget):
         # подсказка и выбор
         self.hint_label = QLabel(self.get_hint_text())
         self.hint_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.hint_label.setStyleSheet("font-size: 20px; color: #FF4500;")
+        self.hint_label.setStyleSheet("font-size: 20px; color: #FF4500; margin-bottom: -40px;")  
         layout.addWidget(self.hint_label)
 
-        # отображение выбора и знаков вопроса в одном layout
+        # отображение выбора и знаков вопроса 
         choices_layout = QVBoxLayout()
-        choices_layout.setSpacing(0)
+        choices_layout.setSpacing(10)  
+        choices_layout.setContentsMargins(0, -60, 0, 0)  
         
         # строки выбора
         self.choice1_display = QLabel(f"{self.get_player1_name()} выбрал:")
@@ -390,7 +390,7 @@ class BaseGameWidget(QWidget):
         self.result_display = QLabel("")
         for label in [self.choice1_display, self.choice2_display, self.result_display]:
             label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            label.setStyleSheet("font-size: 20px;")
+            label.setStyleSheet("font-size: 20px; margin: 10px 0;")  
             choices_layout.addWidget(label)
 
         # знаки вопроса и VS
@@ -399,15 +399,14 @@ class BaseGameWidget(QWidget):
         choice_icons_layout.addStretch()
         self.choice1_icon = QLabel("❓")
         self.choice1_icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.choice1_icon.setStyleSheet("font-size: 60px;")
+        self.choice1_icon.setStyleSheet("font-size: 60px; margin-top: -25px; padding: 12px;")  
         choice_icons_layout.addWidget(self.choice1_icon)
         vs_label = QLabel("VS")
-        vs_label.setStyleSheet("font-size: 24px; font-weight: bold; color: #FF9800;")
+        vs_label.setStyleSheet("font-size: 24px; font-weight: bold; color: #FF9800; margin-top: -25px;")
         choice_icons_layout.addWidget(vs_label)
         self.choice2_icon = QLabel("❓")
         self.choice2_icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.choice2_icon.setStyleSheet("font-size: 60px;")
-        choice_icons_layout.addWidget(self.choice2_icon)
+        self.choice2_icon.setStyleSheet("font-size: 60px; margin-top: -25px; padding: 12px;")  
         choice_icons_layout.addStretch()
         choices_layout.addLayout(choice_icons_layout)
         
@@ -420,18 +419,21 @@ class BaseGameWidget(QWidget):
 
     def setup_choice_buttons(self, layout):
         choices_layout = QVBoxLayout()
+        choices_layout.setSpacing(10)
+        choices_layout.setAlignment(Qt.AlignmentFlag.AlignCenter) 
+        choices_layout.setContentsMargins(0, -50, 0, 0)  
+        
         for action, key in [("rock", "A"), ("scissors", "S"), ("paper", "D")]:
             btn_layout = QHBoxLayout()
-            btn_layout.addStretch()
-            key_label = QLabel(self.key_assignments.get(f"player1_{action}", key))
+            btn_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)  
+            key_label = QLabel(f"[{self.key_assignments.get(f'player1_{action}', key)}]")
             key_label.setObjectName(f"player1_{action}_key")
-            key_label.setStyleSheet("font-size: 16px;")
+            key_label.setStyleSheet("font-size: 16px; margin-right: 5px;")
             btn_layout.addWidget(key_label)
             btn = QPushButton(self.get_choice_text(action))
             set_button_style(btn)
             btn.clicked.connect(lambda checked, a=action: self.make_choice(a))
             btn_layout.addWidget(btn)
-            btn_layout.addStretch()
             choices_layout.addLayout(btn_layout)
         layout.addLayout(choices_layout)
 
@@ -440,16 +442,7 @@ class BaseGameWidget(QWidget):
 
     def update_key_assignments(self, assignments):
         self.key_assignments = assignments
-        # Обновляем отображение биндов по имени объекта
-        player1_binds = self.findChild(QLabel, "player1_binds")
-        if player1_binds:
-            player1_binds.setText(f"Камень: [{self.key_assignments['player1_rock']}]  Ножницы: [{self.key_assignments['player1_scissors']}]  Бумага: [{self.key_assignments['player1_paper']}]")
-        
-        player2_binds = self.findChild(QLabel, "player2_binds")
-        if player2_binds:
-            player2_binds.setText(f"Камень: [{self.key_assignments['player2_rock']}]  Ножницы: [{self.key_assignments['player2_scissors']}]  Бумага: [{self.key_assignments['player2_paper']}]")
-
-        # обновляем буквы 
+        # обновляем отображение букв для каждой кнопки
         for action in ["rock", "scissors", "paper"]:
             key_label = self.findChild(QLabel, f"player1_{action}_key")
             if key_label:
@@ -469,16 +462,13 @@ class BaseGameWidget(QWidget):
     def make_choice(self, choice):
         if self.score1 >= MAX_SCORE or self.score2 >= MAX_SCORE:
             return
-
         player_emoji = EMOJIS[choice]
         self.choice1_display.setText(f"{self.get_player1_name()} выбрал: {player_emoji}")
         self.choice1_icon.setText(player_emoji)
-        
         bot_choice = random.choice(["rock", "scissors", "paper"])
         bot_emoji = EMOJIS[bot_choice]
         self.choice2_display.setText(f"{self.get_player2_name()} выбрал: {bot_emoji}")
         self.choice2_icon.setText(bot_emoji)
-        
         if choice == bot_choice:
             result = "Ничья!"
         elif (choice == "rock" and bot_choice == "scissors") or \
@@ -491,9 +481,7 @@ class BaseGameWidget(QWidget):
             result = "Бот победил!"
             self.score2 += 1
             self.score2_label.setText(f"{self.get_player2_name()}: {self.score2}")
-            
         self.result_display.setText(result)
-
         if self.score1 >= MAX_SCORE or self.score2 >= MAX_SCORE:
             save_game_history("Игра с ботом", self.score1, self.score2)
             self.show_result_window()
@@ -515,23 +503,18 @@ class BaseGameWidget(QWidget):
     def keyPressEvent(self, event):
         if self.is_remapping:
             return super().keyPressEvent(event)
-
         key_name = event.text().upper()
         if not key_name:
             return super().keyPressEvent(event)
-
-        # Проверяем привязки клавиш для игрока 1
+        # проверяем привязки клавиш для игрока 1
         for action, key in self.key_assignments.items():
             if action.startswith("player1_") and key_name == key:
                 choice = action.split("player1_")[1]
                 self.make_choice(choice)
                 return
-
         super().keyPressEvent(event)
-
 class GameVsBotWidget(BaseGameWidget):
     pass
-
 class GameVsFriendWidget(BaseGameWidget):
     def __init__(self, parent=None, key_assignments=None):
         super().__init__(parent, key_assignments)
@@ -546,45 +529,50 @@ class GameVsFriendWidget(BaseGameWidget):
     def get_hint_text(self): return "Игрок 1, сделайте свой выбор"
     def setup_choice_buttons(self, layout):
         choices_layout = QHBoxLayout()
+        choices_layout.setSpacing(30)
+        choices_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)  
         
-        # Кнопки для игрока 1
+        # кнопки для игрока 1
         player1_layout = QVBoxLayout()
-        player1_layout.addWidget(QLabel("Игрок 1"), alignment=Qt.AlignmentFlag.AlignCenter)
+        player1_layout.setSpacing(10)
+        player1_layout.setAlignment(Qt.AlignmentFlag.AlignCenter) 
+        player1_label = QLabel("Игрок 1")
+        player1_label.setStyleSheet("font-size: 24px; font-weight: bold;") 
+        player1_layout.addWidget(player1_label, alignment=Qt.AlignmentFlag.AlignCenter)
         for action, key in [("rock", "A"), ("scissors", "S"), ("paper", "D")]:
             btn_layout = QHBoxLayout()
-            btn_layout.addStretch()
-            key_label = QLabel(self.key_assignments.get(f"player1_{action}", key))
+            btn_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)  
+            key_label = QLabel(f"[{self.key_assignments.get(f'player1_{action}', key)}]")
             key_label.setObjectName(f"player1_{action}_key")
-            key_label.setStyleSheet("font-size: 16px;")
+            key_label.setStyleSheet("font-size: 16px; margin-right: 5px;")
             btn_layout.addWidget(key_label)
             btn = QPushButton(self.get_choice_text(action))
             set_button_style(btn)
             btn.clicked.connect(lambda checked, a=action: self.handle_button_click("player1", a))
             btn_layout.addWidget(btn)
-            btn_layout.addStretch()
             player1_layout.addLayout(btn_layout)
         choices_layout.addLayout(player1_layout)
 
-        choices_layout.addSpacing(50)
-
-        # Кнопки для игрока 2
+        # кнопки для игрока 2
         player2_layout = QVBoxLayout()
-        player2_layout.addWidget(QLabel("Игрок 2"), alignment=Qt.AlignmentFlag.AlignCenter)
+        player2_layout.setSpacing(10)
+        player2_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)  
+        player2_label = QLabel("Игрок 2")
+        player2_label.setStyleSheet("font-size: 24px; font-weight: bold;")
+        player2_layout.addWidget(player2_label, alignment=Qt.AlignmentFlag.AlignCenter)
         for action, key in [("rock", "J"), ("scissors", "K"), ("paper", "L")]:
             btn_layout = QHBoxLayout()
-            btn_layout.addStretch()
-            key_label = QLabel(self.key_assignments.get(f"player2_{action}", key))
+            btn_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)  
+            key_label = QLabel(f"[{self.key_assignments.get(f'player2_{action}', key)}]")
             key_label.setObjectName(f"player2_{action}_key")
-            key_label.setStyleSheet("font-size: 16px;")
+            key_label.setStyleSheet("font-size: 16px; margin-right: 5px;")
             btn_layout.addWidget(key_label)
             btn = QPushButton(self.get_choice_text(action))
             set_button_style(btn)
             btn.clicked.connect(lambda checked, a=action: self.handle_button_click("player2", a))
             btn_layout.addWidget(btn)
-            btn_layout.addStretch()
             player2_layout.addLayout(btn_layout)
         choices_layout.addLayout(player2_layout)
-        
         layout.addLayout(choices_layout)
 
     def handle_button_click(self, player, choice):
@@ -602,7 +590,6 @@ class GameVsFriendWidget(BaseGameWidget):
             self.choice2 = choice
             self.choice2_display.setText("Игрок 2 сделал ход")
             self.choice2_icon.setText("❓")
-
         if self.choice1 and self.choice2:
             self.make_choice(self.choice1, self.choice2)
 
@@ -617,7 +604,6 @@ class GameVsFriendWidget(BaseGameWidget):
             emoji = EMOJIS[choice]
             display.setText(f"Игрок {player_num} выбрал: {emoji}")
             icon.setText(emoji)
-
         if choice1 == choice2:
             result = "Ничья!"
         elif (choice1 == "rock" and choice2 == "scissors") or \
@@ -641,13 +627,13 @@ class GameVsFriendWidget(BaseGameWidget):
         self.choice2_icon.setText("❓")
         self.result_display.setText("")
         self.hint_label.setText("Игрок 1, сделайте свой выбор")
-
         if self.score1 >= MAX_SCORE or self.score2 >= MAX_SCORE:
             save_game_history("Игра с другом", self.score1, self.score2)
             self.show_result_window()
 
     def update_key_assignments(self, assignments):
         super().update_key_assignments(assignments)
+        # обновляем буквы для игрока 2
         for action in ["rock", "scissors", "paper"]:
             key_label = self.findChild(QLabel, f"player2_{action}_key")
             if key_label:
@@ -671,7 +657,6 @@ class GameVsFriendWidget(BaseGameWidget):
                 choice = action.split("player2_")[1]
                 self.update_choice(2, choice)
                 return
-
         event.accept()
 
 class HistoryWidget(QWidget):
@@ -725,7 +710,6 @@ class HistoryWidget(QWidget):
             QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0px; }
         """)
         layout.addWidget(scroll_area)
-
         self.table = QTableWidget()
         self.table.setColumnCount(4)
         self.table.setHorizontalHeaderLabels(["Дата и время", "Режим игры", "Счёт игрока/игрок1", "Счёт бота/игрок2"])
@@ -815,14 +799,14 @@ class SettingsWidget(QWidget):
         controls_container.setLayout(controls_layout)
         controls_layout.setSpacing(15)
 
-        # Заголовки игроков
+        # заголовки игроков
         for col, text in [(0, "1 игрок"), (2, "2 игрок")]:
             label = QLabel(text)
             label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             label.setStyleSheet("font-size: 18px; font-weight: bold;")
             controls_layout.addWidget(label, 0, col, alignment=Qt.AlignmentFlag.AlignCenter)
 
-        # Привязки клавиш
+        # привязки клавиш
         self.key_buttons = {}
         for i, (action, icon) in enumerate([("rock", "🗿"), ("scissors", "✂️"), ("paper", "📄")]):
             for player_num, col, default_key in [(1, 0, "A"), (2, 2, "J")]:
@@ -856,16 +840,17 @@ class SettingsWidget(QWidget):
         controls_layout.setColumnStretch(2, 1)
         layout.addWidget(controls_container)
 
-        # статус бар
-        self.status_bar = QStatusBar()
-        self.status_bar.setStyleSheet("""
-            QStatusBar {
-                background-color: #f8f9fa;
-                border-top: 1px solid #e0e0e0;
-                padding: 5px;
+        # сообщение по центру
+        self.message_label = QLabel()
+        self.message_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.message_label.setStyleSheet("""
+            QLabel {
+                font-size: 16px;
+                color: #000000;
+                margin: 10px 0;
             }
         """)
-        layout.addWidget(self.status_bar)
+        layout.addWidget(self.message_label)
 
     def start_key_remapping(self, button, action_key):
         if self.is_remapping:
@@ -880,14 +865,16 @@ class SettingsWidget(QWidget):
             return super().keyPressEvent(event)
         key_name = event.text().upper()
         if not (key_name and key_name.strip() and key_name in VALID_KEYS):
-            self.status_bar.showMessage("Используйте только буквы английского алфавита и цифры", 3000)
+            self.message_label.setText("Используйте только английский алфавит и цифры")
+            QTimer.singleShot(3000, lambda: self.message_label.setText(""))
             return
         is_already_assigned = any(
             (action_key != self.remapping_action_key and assigned_key == key_name)
             for action_key, assigned_key in {**self.key_assignments, **self.pending_key_assignments}.items()
         )
         if is_already_assigned:
-            self.status_bar.showMessage(f"Клавиша '{key_name}' уже используется", 3000)
+            self.message_label.setText(f"Клавиша '{key_name}' уже используется")
+            QTimer.singleShot(3000, lambda: self.message_label.setText(""))
             return
         self.remapping_button.setText(f"[{key_name}]")
         self.pending_key_assignments[self.remapping_action_key] = key_name
@@ -905,7 +892,8 @@ class SettingsWidget(QWidget):
         # обновляем все кнопки
         for action_key, button in self.key_buttons.items():
             button.setText(f"[{self.key_assignments[action_key]}]")
-        self.status_bar.showMessage("Настройки сохранены", 3000)
+        self.message_label.setText("Настройки сохранены")
+        QTimer.singleShot(3000, lambda: self.message_label.setText(""))
 
     def get_key_assignments(self):
         return {**self.key_assignments, **self.pending_key_assignments}
@@ -922,8 +910,13 @@ class SettingsWidget(QWidget):
             new_assignments = {**self.key_assignments, **self.pending_key_assignments}
             save_key_bindings(new_assignments)
             self.parent_window.key_assignments = new_assignments.copy()
-            # всегда возвращаемся в главное меню
-            self.parent_window.show_main_menu()
+            
+            # возвращаемся к предыдущему виджету
+            if self.previous_widget:
+                self.parent_window.stacked_widget.setCurrentWidget(self.previous_widget)
+                self.previous_widget.update_key_assignments(new_assignments)
+            else:
+                self.parent_window.show_main_menu()
 
 class GameWindow(QMainWindow):
     def __init__(self):
@@ -1005,7 +998,7 @@ class GameWindow(QMainWindow):
 
     def save_key_settings(self):
         new_assignments = self.settings_widget.get_key_assignments()
-        self.key_assignments = new_assignments.copy()  # Создаем копию
+        self.key_assignments = new_assignments.copy()  
         self.game_vs_bot_widget.update_key_assignments(new_assignments)
         self.game_vs_friend_widget.update_key_assignments(new_assignments)
         save_key_bindings(new_assignments)
