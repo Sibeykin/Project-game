@@ -33,7 +33,7 @@ TINY_BUTTON_STYLE = """
     QPushButton {
         background-color: white;
         border: 2px solid black;
-        border-radius: 3px;
+        border-radius: 15px;
         padding: 3px 10px;
         font-size: 12px;
         min-width: 80px;
@@ -922,12 +922,8 @@ class SettingsWidget(QWidget):
             new_assignments = {**self.key_assignments, **self.pending_key_assignments}
             save_key_bindings(new_assignments)
             self.parent_window.key_assignments = new_assignments.copy()
-            # возвращаемся к предыдущему виджету
-            if self.previous_widget:
-                self.parent_window.stacked_widget.setCurrentWidget(self.previous_widget)
-                self.previous_widget.update_key_assignments(new_assignments)
-            else:
-                self.parent_window.show_main_menu()
+            # всегда возвращаемся в главное меню
+            self.parent_window.show_main_menu()
 
 class GameWindow(QMainWindow):
     def __init__(self):
