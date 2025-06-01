@@ -1,0 +1,8 @@
+{
+    "player1_rock": "A",
+    "player1_scissors": "S",
+    "player1_paper": "D",
+    "player2_rock": "J",
+    "player2_scissors": "K",
+    "player2_paper": "L"
+}
