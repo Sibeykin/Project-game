@@ -527,22 +527,34 @@ class GameVsFriendWidget(BaseGameWidget):
             self.choice2 = choice
             self.choice2_display.setText("Игрок 2 выбрал:")
             self.choice2_icon.setText("❓")
+            
         if self.choice1 and self.choice2:
-            self.make_choice(self.choice1, self.choice2)
-
-    def make_choice(self, choice1, choice2):
-        if choice1 and choice2:
-            result = self.determine_winner(choice1, choice2)
+            emoji1 = EMOJIS[self.choice1]
+            emoji2 = EMOJIS[self.choice2]
+            self.choice1_display.setText(f"Игрок 1 выбрал: {emoji1}")
+            self.choice2_display.setText(f"Игрок 2 выбрал: {emoji2}")
+            self.choice1_icon.setText(emoji1)
+            self.choice2_icon.setText(emoji2)
+            
+            # определяем победителя
+            result = self.determine_winner(self.choice1, self.choice2)
             if result == 1:
                 self.score1 += 1
+                self.result_display.setText("Победил Игрок 1!")
             elif result == 2:
                 self.score2 += 1
+                self.result_display.setText("Победил Игрок 2!")
+            else:
+                self.result_display.setText("Ничья!")
+                
             self.update_score_display()
+            
             if self.score1 >= MAX_SCORE or self.score2 >= MAX_SCORE:
                 save_game_history("friend", self.score1, self.score2)
                 self.show_result_window()
             else:
-                self.start_new_round()
+                # таймер для нового раунда
+                QTimer.singleShot(2000, self.start_new_round)
 
     def start_new_round(self):
         self.choice1 = self.choice2 = None
