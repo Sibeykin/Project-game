@@ -1,0 +1,125 @@
+object Form1: TForm1
+  Left = 465
+  Height = 488
+  Top = 155
+  Width = 658
+  Caption = 'Form1'
+  ClientHeight = 488
+  ClientWidth = 658
+  DesignTimePPI = 120
+  LCLVersion = '3.8.0.0'
+  object add: TButton
+    Left = 49
+    Height = 45
+    Top = 317
+    Width = 183
+    Caption = 'Добавить'
+    TabOrder = 0
+    OnClick = addClick
+  end
+  object Edit: TButton
+    Left = 48
+    Height = 45
+    Top = 363
+    Width = 183
+    Caption = 'Редачить'
+    TabOrder = 1
+    OnClick = EditClick
+  end
+  object Delet: TButton
+    Left = 256
+    Height = 45
+    Top = 317
+    Width = 157
+    Caption = 'Удалить'
+    TabOrder = 2
+    OnClick = DeletClick
+  end
+  object Visiblin: TButton
+    Left = 256
+    Height = 45
+    Top = 363
+    Width = 157
+    Caption = 'Смотреть'
+    TabOrder = 3
+    OnClick = VisiblinClick
+  end
+  object Save: TButton
+    Left = 435
+    Height = 45
+    Top = 363
+    Width = 185
+    Caption = 'Сохранить'
+    TabOrder = 4
+    OnClick = SaveClick
+  end
+  object Exi: TButton
+    Left = 435
+    Height = 43
+    Top = 319
+    Width = 185
+    Caption = 'Выход'
+    TabOrder = 5
+    OnClick = ExiClick
+  end
+  object StringGrid1: TStringGrid
+    Left = 45
+    Height = 235
+    Top = 69
+    Width = 589
+    FixedCols = 0
+    Font.CharSet = RUSSIAN_CHARSET
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    ParentFont = False
+    TabOrder = 6
+    OnKeyDown = StringGrid1KeyDown
+    OnSelectCell = StringGrid1SelectCell
+    OnSetEditText = StringGrid1SetEditText
+    OnUTF8KeyPress = StringGrid1UTF8KeyPress
+    ColWidths = (
+      171
+      148
+      94
+      78
+      94
+    )
+  end
+  object Label1: TLabel
+    Left = 236
+    Height = 31
+    Top = 18
+    Width = 178
+    Caption = 'АВТО ТАБЛИЦА'
+    Font.CharSet = RUSSIAN_CHARSET
+    Font.Height = -23
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object DateTimePicker1: TDateTimePicker
+    Left = 286
+    Height = 28
+    Top = 435
+    Width = 99
+    CenturyFrom = 1941
+    MaxDate = 2958465
+    MinDate = -53780
+    TabOrder = 7
+    TrailingSeparator = False
+    TextForNullDate = 'NULL'
+    LeadingZeros = True
+    Visible = False
+    Kind = dtkDate
+    TimeFormat = tf24
+    TimeDisplay = tdHMS
+    DateMode = dmComboBox
+    Date = 45790
+    Time = 0.0553114467620617
+    UseDefaultSeparators = True
+    HideDateTimeParts = []
+    MonthNames = 'Long'
+    OnChange = DateTimePicker1Change
+  end
+end
